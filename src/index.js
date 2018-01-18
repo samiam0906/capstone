@@ -2,12 +2,20 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
-
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 import App from './components/App';
+import allReducers from './reducers/reducers_index';
 
+const store = createStore(allReducers);
+
+// Provider makes the store for all of your data
+// available to all containers / components
 ReactDOM.render((
-  <Router>
-    <Route path="/" component={App} />
-  </Router>
+  <Provider store={store}>
+    <Router>
+      <Route path="/" component={App} />
+    </Router>
+  </Provider>
 ), document.getElementById('root'));
 registerServiceWorker();

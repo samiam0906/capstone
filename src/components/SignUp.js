@@ -2,6 +2,12 @@ import React, { Component } from 'react';
 import SignUpHeader from './Headers/SignUpHeader';
 
 class SignUp extends Component {
+
+// Post new user to users table
+  // handleSubmit(e) {
+  //   e.preventDefault();
+  // }
+
   render() {
     return (
       <div>
