@@ -1,17 +1,13 @@
 import React from 'react';
+import LogIn from '../LogIn';
+import { Link } from 'react-router-dom';
 
 const SignUpHeader = () => {
   return (
     <nav>
-      <form>
-        <label>Email</label>
-        <input type="string" name="email" />
-
-        <label>Password</label>
-        <input type="string" name="password" />
-
-        <input type="submit" name="submit" value="Log In" />
-      </form>
+      <Link to="/">Home</Link>
+      <Link to="/about">About</Link>
+      <LogIn />
     </nav>
   )
 }
