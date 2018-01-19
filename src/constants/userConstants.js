@@ -1,0 +1,7 @@
+export const userConstants = {
+  LOG_IN: "LOG_IN",
+  SIGN_UP: "SIGN_UP",
+  SAVE_USER: "SAVE_USER",
+  SAVE_USER_SUCCESS: "SAVE_USER_SUCCESS",
+  SAVE_USER_ERROR: "SAVE_USER_ERROR"
+}

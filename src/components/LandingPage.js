@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 // import { Redirect } from 'react-router-dom';
 
 import LandingHeader from './Headers/LandingHeader';
+import SignUp from './SignUp';
 
 // Find Todays Date
 // let today = new Date();
@@ -48,35 +49,7 @@ class LandingPage extends Component {
       <div>
         <LandingHeader />
 
-        <h2>Application Name</h2>
-        <form onSubmit={this.handleSubmit}>
-          <div className="enterBudget">
-            <label>Budget</label>
-            <input type="number" name="budget" placeholder="Enter your budget"/>
-          </div>
-
-          <div className="numTravelers">
-            <label>Number of Travelers</label>
-            <input type="number" name="numTravelers" placeholder="Enter your party size"/>
-          </div>
-
-          <br/>
-
-          <h4>Explore</h4>
-          <div>
-            <input type="text" name="departureCity" placeholder="From" />
-            <input type="text" name="arrivalCity" placeholder="To" />
-            <input type="date" name="departureDate" />
-            <input type="date" name="returnDate" />
-          </div>
-
-          <div className="enterDestination">
-            <input type="text" name="destination" placeholder="Enter Destination" />
-          </div>
-
-          <input type="submit" name="submit" value="Search"/>
-        </form>
-
+        <SignUp></SignUp>
       </div>
     );
   }

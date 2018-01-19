@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import App from './components/App';
 import allReducers from './reducers/reducers_index';
+import thunk from 'redux-thunk';
 
-const store = createStore(allReducers);
+const store = createStore(
+  allReducers,
+  applyMiddleware(thunk) // allows us to dispatch async actions
+);
 
 // Provider makes the store for all of your data
 // available to all containers / components

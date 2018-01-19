@@ -4,7 +4,7 @@ module.exports = {
 
   test: {
     client: 'pg',
-    connection: 'postgres://localhost/weatherapp',
+    connection: 'postgres://localhost/travelApp',
     migrations: {
       directory: __dirname + '/src/db/migrations'
     },
@@ -14,7 +14,7 @@ module.exports = {
   },
   development: {
     client: 'pg',
-    connection: 'postgres://localhost/weatherapp',
+    connection: 'postgres://localhost/travelApp',
     migrations: {
       directory: __dirname + '/src/db/migrations'
     },
