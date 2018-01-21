@@ -5,8 +5,11 @@ import axios from 'axios';
 //   userSignUpRequest
 // };
 
+const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
 export const userSignUpRequest = (userData) => {
   return dispatch => {
-    return axios.post('/signup', userData)
+    console.log(userData);
+    return axios.post('http://localhost:8000', userData)
   }
 }

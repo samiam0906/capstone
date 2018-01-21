@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { userSignUpRequest } from '../actions/userActions';
+import { withRouter } from 'react-router-dom';
+import validateInput from '../server/shared/validations/signUp';
+
+const Validator = require('validator');
+const _ = require('lodash');
+const isEmpty = _.isEmpty();
+
 
 class SignUp extends Component {
   constructor(props) {
@@ -9,34 +16,142 @@ class SignUp extends Component {
 
     this.state = {
       email: '',
-      password: '',
+      hashed_password: '',
       passwordConfirmation: '',
       firstName: '',
-      lastName: ''
+      lastName: '',
+      errors: {}
     }
   }
+
+
+
+  // validateInput = (data) => {
+  //   console.log(data);
+  //
+  //   let errors = {};
+  //
+  //   if (Validator.isEmpty(data.email)) {
+  //     this.setState({errors: {
+  //                     email: 'This field is required'
+  //                   }
+  //                 })
+  //   }
+  //
+  //   if (!Validator.isEmail(data.email)) {
+  //     this.setState({errors: {
+  //                     email: 'Email is invalid'
+  //                   }
+  //                 })
+  //   }
+  //
+  //   if (Validator.isEmpty(data.hashed_password)) {
+  //     this.setState({errors: {
+  //                     hashed_password: 'This field is required'
+  //                   }
+  //                 })
+  //   }
+  //
+  //   if (Validator.isEmpty(data.passwordConfirmation)) {
+  //     this.setState({errors: {
+  //                     passwordConfirmation: 'This field is required'
+  //                   }
+  //                 })
+  //   }
+  //
+  //   if (!Validator.equals(data.hashed_password, data.passwordConfirmation)) {
+  //     this.setState({errors: {
+  //                     passwordConfirmation: 'Passwords must match'
+  //                   }
+  //                 })
+  //   }
+  //
+  //   if (Validator.isEmpty(data.firstName)) {
+  //     this.setState({errors: {
+  //                     firstName: 'This field is required'
+  //                   }
+  //                 })
+  //   }
+  //
+  //   if (Validator.isEmpty(data.lastName)) {
+  //     this.setState({errors: {
+  //                     lastName: 'This field is required'
+  //                   }
+  //                 })
+  //   }
+  //
+  //   console.log(errors)
+  // }
 
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value })
   }
 
+  isValid() {
+    const { errors, isValid } = validateInput(this.state)
+
+    if (!isValid) {
+      this.setState({ errors });
+    }
+
+    return isValid;
+  }
+
 // Post new user to users table
-  handleSubmit = (e) => {
+  onSubmit = (e) => {
     e.preventDefault();
-    this.props.userSignUpRequest(this.state);
+
+    // if state isValid (returns true) we make this ajax request
+    if (this.isValid()) {
+      this.setState({ errors: {} });
+      this.props.userSignUpRequest(this.state).then(
+        // Redirect users after a successful signup
+        () => {
+          console.log("hi");
+          this.props.history.push('/search');
+        },
+        (err) => this.setState({ errors: err.response.data})
+      )
+    }
+
+    // this.validateInput(this.state);
   }
 
   render() {
+    const { errors } = this.state;
+
     return (
       <div>
         <h3>Sign Up</h3>
-        <form onSubmit={this.handleSubmit} >
-          <input type="text" name="firstName" placeholder="First name" onChange={this.onChange} />
-          <input type="text" name="lastName" placeholder="Last name" onChange={this.onChange} />
-          <input type="text" name="email" placeholder="email" onChange={this.onChange} />
-          <input type="text" name="password" placeholder="Create Password" onChange={this.onChange} />
-          <input type="text" name="passwordConfirmation" placeholder="Confirm Password" onChange={this.onChange} />
-          <input type="submit" name="submit" value="Create Account" onChange={this.onChange} />
+        <form onSubmit={this.onSubmit} >
+          <div>
+            <input type="text" name="firstName" placeholder="First name" onChange={this.onChange} />
+            {errors.firstName && <span>{errors.firstName}</span>}
+          </div>
+
+          <div>
+            <input type="text" name="lastName" placeholder="Last name" onChange={this.onChange} />
+            {errors.lastName && <span>{errors.lastName}</span>}
+          </div>
+
+          <div>
+            <input type="text" name="email" placeholder="email" onChange={this.onChange} />
+            {errors.email && <span>{errors.email}</span>}
+          </div>
+
+          <div>
+            <input type="text" name="hashed_password" placeholder="Create Password" onChange={this.onChange} />
+            {errors.hashed_password && <span>{errors.hashed_password}</span>}
+          </div>
+
+          <div>
+            <input type="text" name="passwordConfirmation" placeholder="Confirm Password" onChange={this.onChange} />
+            {errors.passwordConfirmation && <span>{errors.passwordConfirmation}</span>}
+          </div>
+
+          <div>
+            <input type="submit" name="submit" value="Create Account" onChange={this.onChange} />
+          </div>
         </form>
       </div>
     )
@@ -58,4 +173,6 @@ function mapDispatchToProps(dispatch) {
 //   userSignUpRequest: React.PropTypes.func.isRequired
 // }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+const SignUpWithRouter = withRouter(SignUp);
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignUpWithRouter));

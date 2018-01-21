@@ -11,8 +11,8 @@ class App extends Component {
     return (
       <div>
         <Switch>
-          <Route path="/" component={LandingPage} />
           <Route path="/search" component={TripSearch} />
+          <Route path="/" component={LandingPage} />
         </Switch>
       </div>
     );

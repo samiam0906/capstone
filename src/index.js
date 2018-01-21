@@ -8,16 +8,20 @@ import App from './components/App';
 import allReducers from './reducers/reducers_index';
 import thunk from 'redux-thunk';
 
+
+// import routes from './server/routes/users';
+
 const store = createStore(
   allReducers,
-  applyMiddleware(thunk) // allows us to dispatch async actions
+  applyMiddleware(thunk), // allows us to dispatch async actions
+
 );
 
 // Provider makes the store for all of your data
 // available to all containers / components
 ReactDOM.render((
   <Provider store={store}>
-    <Router>
+    <Router >
       <Route path="/" component={App} />
     </Router>
   </Provider>
