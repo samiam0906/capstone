@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import registerServiceWorker from './registerServiceWorker';
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import App from './components/App';
 import allReducers from './reducers/reducers_index';
 import thunk from 'redux-thunk';
@@ -13,8 +13,9 @@ import thunk from 'redux-thunk';
 
 const store = createStore(
   allReducers,
-  applyMiddleware(thunk), // allows us to dispatch async actions
-
+  compose(applyMiddleware(thunk), // allows us to dispatch async actions
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
 );
 
 // Provider makes the store for all of your data

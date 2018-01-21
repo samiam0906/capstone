@@ -84,11 +84,11 @@ class SignUp extends Component {
   // }
 
   onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value })
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   isValid() {
-    const { errors, isValid } = validateInput(this.state)
+    const { errors, isValid } = validateInput(this.state);
 
     if (!isValid) {
       this.setState({ errors });
@@ -107,7 +107,6 @@ class SignUp extends Component {
       this.props.userSignUpRequest(this.state).then(
         // Redirect users after a successful signup
         () => {
-          console.log("hi");
           this.props.history.push('/search');
         },
         (err) => this.setState({ errors: err.response.data})

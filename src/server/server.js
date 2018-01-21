@@ -5,43 +5,16 @@ const knex = require('../db/knex');
 const bcrypt = require('bcrypt-as-promised');
 const path = require('path');
 
-const Validator = require('validator');
-const _ = require('lodash');
-const isEmpty = _.isEmpty();
-
-
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
 }));
 
-const proxyurl = "https://cors-anywhere.herokuapp.com/";
-
 const users = require('./routes/users');
 app.use('/', users);
 
-const passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
-// middleware to initialize Passport.js
-// app.use(passport.initialize());
-//
-// passport.use(new LocalStrategy({
-//   usernameField: 'email'
-//   },
-//   function(email, password, done) {
-//     User.findOne({ email: email }, function(err, user) {
-//       if (err) { return done(err); }
-//       if (!user) {
-//         return done(null, false, { message: 'Incorrect email address.' });
-//       }
-//       if (!user.validPassword(password)) {
-//         return done(null, false, { message: 'Incorrect password.' });
-//       }
-//       return done(null, user);
-//     });
-//   }
-// ));
+
 
 // Add headers
 // app.use(function (req, res, next) {
