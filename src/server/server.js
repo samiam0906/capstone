@@ -4,6 +4,7 @@ const PORT = process.env.PORT || 8000;
 const knex = require('../db/knex');
 const bcrypt = require('bcrypt-as-promised');
 const path = require('path');
+const passportSetup = require('./config/passportSetup');
 
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -11,9 +12,12 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
+// set up routes
 const users = require('./routes/users');
 app.use('/', users);
 
+const auth = require('./routes/auth');
+app.use('/auth', auth)
 
 
 // Add headers

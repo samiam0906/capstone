@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { userSignUpRequest } from '../actions/userActions';
+import { userSignUpRequest, doesUserExist } from '../actions/userActions';
 import { withRouter } from 'react-router-dom';
 import validateInput from '../server/shared/validations/signUp';
-
-const Validator = require('validator');
-const _ = require('lodash');
-const isEmpty = _.isEmpty();
-
 
 class SignUp extends Component {
   constructor(props) {
@@ -97,6 +92,23 @@ class SignUp extends Component {
     return isValid;
   }
 
+  checkUserExists = (e) => {
+    const field = e.target.name;
+    const val = e.target.value;
+
+    if (val !== '') {
+      this.props.doesUserExist(val).then(res => {
+        let errors = this.state.errors;
+        if (res.data.user) {
+          errors[field] = "There is user with such " + field;
+        } else {
+          errors[field] = '';
+        }
+        this.setState({ errors })
+      })
+    }
+  }
+
 // Post new user to users table
   onSubmit = (e) => {
     e.preventDefault();
@@ -165,13 +177,10 @@ function mapStateToProps(state) {
 
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ userSignUpRequest: userSignUpRequest }, dispatch);
+  return bindActionCreators({
+    userSignUpRequest: userSignUpRequest,
+    doesUserExist: doesUserExist
+  }, dispatch);
 }
 
-// SignUpForm.propTypes = {
-//   userSignUpRequest: React.PropTypes.func.isRequired
-// }
-
-const SignUpWithRouter = withRouter(SignUp);
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignUpWithRouter));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignUp));

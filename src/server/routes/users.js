@@ -5,31 +5,27 @@ const Validator = require('validator');
 const _ = require('lodash');
 const isEmpty = _.isEmpty();
 const bcrypt = require('bcrypt-as-promised');
+const jwt = require('jsonwebtoken');
 
-const passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
-// middleware to initialize Passport.js
-router.use(passport.initialize());
+function validateInput(data, otherValidations) {
+  let { errors } = otherValidations(data);
 
-passport.use(new LocalStrategy({
-  usernameField: 'email'
-  },
-  function(email, password, done) {
-    User.findOne({ email: email }, function(err, user) {
-      if (err) { return done(err); }
-      if (!user) {
-        return done(null, false, { message: 'Incorrect email address.' });
-      }
-      if (!user.validPassword(password)) {
-        return done(null, false, { message: 'Incorrect password.' });
-      }
-      return done(null, user);
-    });
-  }
-));
+  return knex('users').where('email', data.email)
+          .first()
+          .then(user => {
 
+            if (user) {
+              errors.email = "A user with this email already exists"
+            }
+            return {
+                    errors,
+                    isValid: _.isEmpty(errors)
+                  }
+          })
+}
 
-function validateInput(data) {
+// try to import it from module. need to enable ES6 syntax in node
+function commonValidations(data) {
   console.log(data);
 
   let errors = {};
@@ -61,8 +57,6 @@ function validateInput(data) {
   if (Validator.isEmpty(data.lastName)) {
     errors.lastName = 'This field is required'
   }
-
-  console.log(errors)
 
   return {
     errors,
@@ -96,58 +90,54 @@ router.use(function (req, res, next) {
     next();
 });
 
+// router.get('/:identifier', (req, res, next) => {
+//   const { email } = req.body;
+//
+//   console.log(req.body)
+//   knex('users')
+//     .select('email')
+//     .where('email', email)
+//     .then(user => {
+//       res.json({ user });
+//     })
+// })
+
 router.post('/', (req, res, next) => {
-  console.log(req.body);
+  // const { errors, isValid } = commonValidations(req.body);
 
-  // validateInput(req.body);
+  validateInput(req.body, commonValidations).then(({ errors, isValid }) => {
+    if (isValid) {
+      const { email, hashed_password, firstName, lastName } = req.body;
 
-  const { errors, isValid } = validateInput(req.body);
-
-  if (isValid) {
-    console.log("wooo");
-    res.json({ success: true });
-  } else {
-    res.status(400).json(errors);
-  }
-
-  const { email, hashed_password, firstName, lastName } = req.body;
-
-  // if (!email || email.trim() === "") {
-  //   const err = new Error('Email must not be blank');
-  //   err.status = 400;
-  //
-  //   return next(err);
-  // }
-  //
-  // if (!hashed_password || hashed_password.trim() === "") {
-  //   const err = new Error('Password must not be blank');
-  //   err.status = 400;
-  //
-  //   return next(err);
-  // }
-
-  knex('users')
-    .where('email', email)
-    .first()
-    .then((exists) => {
-      if (exists) {
-        const err = new Error('Email already exists');
-        err.status = 400;
-
-        throw err;
-      }
-
-      return bcrypt.hash(hashed_password, 12);
-    })
-    .then((hashed_password) => {
-      return knex('users').insert({ email, hashed_password, firstName, lastName });
-    })
-    .then(() => {
-      res.status(200);
-    })
-    .catch(err => {
-      next(err);
-    });
+      knex('users')
+        .where('email', email)
+        .first()
+        .then(() => {
+          return bcrypt.hash(hashed_password, 12);
+        })
+        // .then((exists) => {
+        //   if (exists) {
+        //     const err = new Error('Email already exists');
+        //     err.status = 400;
+        //     throw err;
+        //   }
+        //
+        //   return bcrypt.hash(hashed_password, 12);
+        // })
+        .then((hashed_password) => {
+          return knex('users').insert({ email, hashed_password, firstName, lastName });
+        })
+        .then(() => {
+          // res.status(200);
+          res.json({ success: true });
+        })
+        .catch(err => {
+          next(err);
+        });
+    } else {
+      res.status(400).json(errors);
+    }
+  });
 })
 
 

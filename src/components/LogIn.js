@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, withRouter } from 'react-router-dom';
 import validateInput from '../server/shared/validations/logIn';
+import { logIn, signInAction } from '../actions/userActions';
+
 
 class LogIn extends Component {
   constructor(props) {
@@ -34,6 +36,23 @@ class LogIn extends Component {
 
     if (this.isValid()) {
       this.setState({ errors: {} });
+      this.props.logIn(this.state).then(
+        // Redirect users after successful login
+        () => {
+          this.props.history.push('/search');
+        },
+        (err) => this.setState({ errors: err.response.data.errors })
+      )
+    }
+  }
+
+  errorMessage = () => {
+    if (this.props.errorMessage) {
+      return (
+        <div className="info-red">
+          {this.props.errorMessage}
+        </div>
+      )
     }
   }
 
@@ -58,7 +77,17 @@ class LogIn extends Component {
           <div>
             <input type="submit" name="submit" value="Log In" />
           </div>
+
+          { errors.form && <div>{errors.form}</div>}
         </form>
+
+
+
+        {/* {this.errorMessage()} */}
+
+        {/* <Link className="google-btn" to="/auth/google">Google+</Link>
+
+        <Link to="/protected">Protected Page</Link> */}
       </div>
     )
   }
@@ -68,16 +97,19 @@ class LogIn extends Component {
 // to your component as a property (props)
 // We are connecting your main state (or part of the apps store) and passing it
 // into the container as properties
-// function mapStateToProps(state) {
-//   return {
-//
-//   }
-// }
-//
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ logIn: logIn }, dispatch);
-// }
-//
-// export default connect(mapStateToProps, mapDispatchToProps)(LogIn);
+function mapStateToProps(state) {
+  return {
+    userData: state,
+    // errorMessage: state.auth.error
+  };
+}
 
-export default LogIn;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    logIn: logIn,
+    // signInAction: signInAction
+  },
+  dispatch);
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LogIn));
