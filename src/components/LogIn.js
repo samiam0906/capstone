@@ -43,7 +43,7 @@ class LogIn extends Component {
         },
         (err) => {
           console.log(err)
-          // this.setState({ errors: err.response.data.errors })
+          this.setState({ errors: err.response.data })
         }
       )
     }

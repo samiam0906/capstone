@@ -23,7 +23,7 @@ router.use(function (req, res, next) {
       headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept, Authorization";
       res.writeHead(200, headers);
       res.end();
-}
+  }
 
     // Website you wish to allow to connect
     // res.header('Access-Control-Allow-Origin', 'http://localhost:8000');

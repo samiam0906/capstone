@@ -6,8 +6,10 @@
 // put this HOC in utils folder in client on re-org
 
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { addFlashMessage } from '../actions/addFlashMessage';
 
 export default function (ComposedComponent) {
   class Authentication extends Component {
@@ -18,13 +20,17 @@ export default function (ComposedComponent) {
     // If the user is not, the HOC will redirect to the signin landing Page
     // url at '/'
     componentWillMount() {
-      if (!this.props.authenticated) {
+      if (!this.props.isAuthenticated) {
+        this.props.addFlashMessage({
+          type: 'error',
+          text: 'You need to login to access this page'
+        });
         this.props.history.push('/');
       }
     }
 
     componentWillUpdate(nextProps) {
-      if (!nextProps.authenticated) {
+      if (!nextProps.isAuthenticated) {
         this.props.history.push('/');
       }
     }
@@ -41,8 +47,14 @@ export default function (ComposedComponent) {
   }
 
   function mapStateToProps(state) {
-    return { authenticated: state.auth.authenticated };
+    return { authenticated: state.auth.isAuthenticated };
   }
 
-  return connect(mapStateToProps)(Authentication);
+  function mapDispatchToProps(dispatch) {
+    return bindActionCreators({
+      addFlashMessage: addFlashMessage
+    }, dispatch);
+  }
+
+  return connect(mapStateToProps, mapDispatchToProps)(Authentication);
 }

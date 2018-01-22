@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 
 import Navbar from './Navbar';
+import FlashMessagesList from './FlashMessagesList';
 import SecretPage from './SecretPage';
 import TripSearch from './TripSearch';
 import LandingPage from './LandingPage';
@@ -24,6 +25,7 @@ class App extends Component {
     return (
       <div>
         <Navbar />
+        <FlashMessagesList />
         <Switch>
           <Route path="/search" component={TripSearch} />
 

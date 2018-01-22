@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { userSignUpRequest, doesUserExist } from '../actions/userActions';
+import { addFlashMessage } from '../actions/addFlashMessage';
 import { withRouter } from 'react-router-dom';
 import validateInput from '../server/shared/validations/signUp';
 
@@ -119,9 +120,16 @@ class SignUp extends Component {
       this.props.userSignUpRequest(this.state).then(
         // Redirect users after a successful signup
         () => {
+          this.props.addFlashMessage({
+            type: 'success',
+            text: 'You have signed up successfully. Welcome!'
+          })
           this.props.history.push('/search');
         },
-        (err) => this.setState({ errors: err.response.data})
+        (err) => {
+          console.log(err.response)
+          this.setState({ errors: err.response.data })
+        }
       )
     }
 
@@ -179,7 +187,8 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     userSignUpRequest: userSignUpRequest,
-    doesUserExist: doesUserExist
+    doesUserExist: doesUserExist,
+    addFlashMessage: addFlashMessage
   }, dispatch);
 }
 
