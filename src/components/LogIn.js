@@ -41,7 +41,10 @@ class LogIn extends Component {
         () => {
           this.props.history.push('/search');
         },
-        (err) => this.setState({ errors: err.response.data.errors })
+        (err) => {
+          console.log(err)
+          // this.setState({ errors: err.response.data.errors })
+        }
       )
     }
   }

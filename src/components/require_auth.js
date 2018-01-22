@@ -3,6 +3,8 @@
 // This HOC will check and see if user is AUTHENTICATED
 // If not, the HOC will redirect to another route (e.g. LandingPage)
 
+// put this HOC in utils folder in client on re-org
+
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';

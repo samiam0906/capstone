@@ -17,7 +17,10 @@ const users = require('./routes/users');
 app.use('/', users);
 
 const auth = require('./routes/auth');
-app.use('/auth', auth)
+app.use('/auth', auth);
+
+const events = require('./routes/events');
+app.use('/events', events);
 
 
 // Add headers

@@ -6,6 +6,7 @@ import Navbar from './Navbar';
 import SecretPage from './SecretPage';
 import TripSearch from './TripSearch';
 import LandingPage from './LandingPage';
+import NewEventPage from './NewEventPage';
 
 import requireAuth from './require_auth';
 import noRequireAuth from './no_require_auth';
@@ -25,7 +26,10 @@ class App extends Component {
         <Navbar />
         <Switch>
           <Route path="/search" component={TripSearch} />
+
           <Route path="/secret" component={requireAuth(SecretPage)} />
+
+          <Route path="/new-event" component={NewEventPage} />
 
           <Route exact path="/" component={noRequireAuth(LandingPage)} />
         </Switch>

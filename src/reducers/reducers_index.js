@@ -1,4 +1,5 @@
 // This file will combine all of our reducers into one object
+// Possibly label rootReducer in re-org
 
 import { combineReducers } from 'redux';
 // import reducers here...

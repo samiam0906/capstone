@@ -1,7 +1,19 @@
-import { AUTHENTICATED, UNAUTHENTICATED, AUTHENTICATION_ERROR } from '../actions/userActions';
+import { SET_CURRENT_USER, AUTHENTICATED, UNAUTHENTICATED, AUTHENTICATION_ERROR } from '../actions/userActions';
+import isEmpty from 'lodash/isEmpty';
 
-export default function(state={}, action) {
+const initialState = {
+  isAuthenticated: false,
+  user: {}
+}
+
+export default function(state = initialState, action) {
   switch(action.type) {
+    case SET_CURRENT_USER:
+      return {
+        isAuthenticated: !isEmpty(action.user),
+        user: action.user
+      }
+
     case AUTHENTICATED:
       return { ...state, authenticated: true };
     case UNAUTHENTICATED:

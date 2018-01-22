@@ -7,7 +7,9 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import App from './components/App';
 import allReducers from './reducers/reducers_index';
 import thunk from 'redux-thunk';
-
+import setAuthToken from './utils/setAuthToken';
+import jwtDecode from 'jwt-decode';
+import { setCurrentUser } from './actions/userActions';
 
 
 // import routes from './server/routes/users';
@@ -18,6 +20,14 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 );
+
+const localToken = localStorage.jwtToken;
+
+if (localToken) {
+  setAuthToken(localToken);
+  store.dispatch(setCurrentUser(jwtDecode(localToken)));
+}
+
 
 // Provider makes the store for all of your data
 // available to all containers / components
