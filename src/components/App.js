@@ -12,14 +12,6 @@ import NewEventPage from './NewEventPage';
 import requireAuth from './require_auth';
 import noRequireAuth from './no_require_auth';
 
-import { AUTHENTICATED } from '../actions/userActions';
-
-const user = localStorage.getItem('user');
-
-// if (user) {
-//   store.dispatch({ type: AUTHENTICATED });
-// }
-
 class App extends Component {
   render() {
     return (

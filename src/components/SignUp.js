@@ -20,65 +20,6 @@ class SignUp extends Component {
     }
   }
 
-
-
-  // validateInput = (data) => {
-  //   console.log(data);
-  //
-  //   let errors = {};
-  //
-  //   if (Validator.isEmpty(data.email)) {
-  //     this.setState({errors: {
-  //                     email: 'This field is required'
-  //                   }
-  //                 })
-  //   }
-  //
-  //   if (!Validator.isEmail(data.email)) {
-  //     this.setState({errors: {
-  //                     email: 'Email is invalid'
-  //                   }
-  //                 })
-  //   }
-  //
-  //   if (Validator.isEmpty(data.hashed_password)) {
-  //     this.setState({errors: {
-  //                     hashed_password: 'This field is required'
-  //                   }
-  //                 })
-  //   }
-  //
-  //   if (Validator.isEmpty(data.passwordConfirmation)) {
-  //     this.setState({errors: {
-  //                     passwordConfirmation: 'This field is required'
-  //                   }
-  //                 })
-  //   }
-  //
-  //   if (!Validator.equals(data.hashed_password, data.passwordConfirmation)) {
-  //     this.setState({errors: {
-  //                     passwordConfirmation: 'Passwords must match'
-  //                   }
-  //                 })
-  //   }
-  //
-  //   if (Validator.isEmpty(data.firstName)) {
-  //     this.setState({errors: {
-  //                     firstName: 'This field is required'
-  //                   }
-  //                 })
-  //   }
-  //
-  //   if (Validator.isEmpty(data.lastName)) {
-  //     this.setState({errors: {
-  //                     lastName: 'This field is required'
-  //                   }
-  //                 })
-  //   }
-  //
-  //   console.log(errors)
-  // }
-
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   }
@@ -132,8 +73,6 @@ class SignUp extends Component {
         }
       )
     }
-
-    // this.validateInput(this.state);
   }
 
   render() {
@@ -159,12 +98,12 @@ class SignUp extends Component {
           </div>
 
           <div>
-            <input type="text" name="hashed_password" placeholder="Create Password" onChange={this.onChange} />
+            <input type="password" name="hashed_password" placeholder="Create Password" onChange={this.onChange} />
             {errors.hashed_password && <span>{errors.hashed_password}</span>}
           </div>
 
           <div>
-            <input type="text" name="passwordConfirmation" placeholder="Confirm Password" onChange={this.onChange} />
+            <input type="password" name="passwordConfirmation" placeholder="Confirm Password" onChange={this.onChange} />
             {errors.passwordConfirmation && <span>{errors.passwordConfirmation}</span>}
           </div>
 

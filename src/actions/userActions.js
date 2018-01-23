@@ -1,11 +1,6 @@
-import { userConstants } from '../constants/actionTypes';
 import axios from 'axios';
 import setAuthToken from '../utils/setAuthToken';
 import jwtDecode from 'jwt-decode';
-
-// export const userActions = {
-//   userSignUpRequest
-// };
 
 export const AUTHENTICATED = "AUTHENTICATED_USER";
 export const UNAUTHENTICATED = "UNAUTHENTICATED_USER";
@@ -46,24 +41,6 @@ export const logIn = (data) => {
     });
   }
 }
-
-// export function signInAction({ email, password }, history) {
-//   return async (dispatch) => {
-//     try {
-//       const res = await axios.post(`${URL}/auth`, { email, password });
-//
-//       dispatch({ type: AUTHENTICATED });
-//       const token = res.data.token
-//       localStorage.setItem('jwtToken', token);
-//       history.push('/secret');
-//     } catch(error) {
-//       dispatch({
-//         type: AUTHENTICATION_ERROR,
-//         payload: "Invalid email or password"
-//       });
-//     }
-//   };
-// }
 
 export const logout = () => {
   return dispatch => {

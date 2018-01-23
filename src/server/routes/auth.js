@@ -39,7 +39,6 @@ router.use(function (req, res, next) {
     // res.header('Access-Control-Allow-Credentials', true);
     //
     // if (req.method === 'OPTIONS') {
-    //   // console.log(req.headers.origin)
     //   res.header('Access-Control-Allow-Origin', 'Authorization', 'Content-Type', req.headers.origin);
     // } else {
     //   res.header('Access-Control-Allow-Origin', '*')
@@ -67,11 +66,11 @@ router.post('/', (req, res, next) => {
           res.json({ token })
         } else {
 
-            res.status(401).json({ errors: { form: 'Invalid Credentials' } })
+            res.status(401).json({ errors: { form: 'Invalid email or password' } })
         }
       } else {
 
-        res.status(401).json({ errors: { form: 'Invalid Credentials' } })
+        res.status(401).json({ errors: { form: 'Invalid email or password' } })
       }
     })
 })

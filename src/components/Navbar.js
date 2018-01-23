@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import { logout } from '../actions/userActions';
 
 class Navbar extends Component {
@@ -10,6 +10,7 @@ class Navbar extends Component {
     e.preventDefault();
     // logout action will go below
     this.props.logout();
+    this.props.history.push('/');
   }
 
   render() {
@@ -17,7 +18,7 @@ class Navbar extends Component {
 
     const userLinks = (
       <ul className="nav navbar-nav navbar-right">
-        <li><a href="#" onClick={this.logout}>Logout</a></li>
+        <li><Link to="/" onClick={this.logout}>Logout</Link></li>
       </ul>
     );
 
@@ -36,10 +37,12 @@ class Navbar extends Component {
           </div>
 
           <div className="collapse navbar-collapse">
-            {/* conditionally render links */}
-            { isAuthenticated ? userLinks : guestLinks }
+
+
           </div>
 
+          {/* conditionally render links */}
+          { isAuthenticated ? userLinks : guestLinks }
         </div>
       </nav>
     );
@@ -63,4 +66,4 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navbar));

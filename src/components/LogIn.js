@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { Link, Redirect, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import validateInput from '../server/shared/validations/logIn';
-import { logIn, signInAction } from '../actions/userActions';
+import { logIn } from '../actions/userActions';
 
 
 class LogIn extends Component {
@@ -42,25 +42,14 @@ class LogIn extends Component {
           this.props.history.push('/search');
         },
         (err) => {
-          console.log(err)
-          this.setState({ errors: err.response.data })
+          this.setState({ errors: err.response.data.errors })
         }
       )
     }
   }
 
-  errorMessage = () => {
-    if (this.props.errorMessage) {
-      return (
-        <div className="info-red">
-          {this.props.errorMessage}
-        </div>
-      )
-    }
-  }
-
   render() {
-    const {errors, identifier, password } = this.state;
+    const { errors } = this.state;
 
     return (
       <div>
@@ -84,13 +73,6 @@ class LogIn extends Component {
           { errors.form && <div>{errors.form}</div>}
         </form>
 
-
-
-        {/* {this.errorMessage()} */}
-
-        {/* <Link className="google-btn" to="/auth/google">Google+</Link>
-
-        <Link to="/protected">Protected Page</Link> */}
       </div>
     )
   }

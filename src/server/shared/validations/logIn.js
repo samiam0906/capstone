@@ -1,6 +1,5 @@
 const Validator = require('validator');
-const _ = require('lodash');
-const isEmpty = _.isEmpty();
+const isEmpty = require('lodash/isEmpty');
 
 export default function validateInput(data) {
   let errors = {};
@@ -15,6 +14,6 @@ export default function validateInput(data) {
 
   return {
     errors,
-    isValid: _.isEmpty(errors)
+    isValid: isEmpty(errors)
   }
 }
